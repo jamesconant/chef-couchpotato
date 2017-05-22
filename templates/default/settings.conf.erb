@@ -35,19 +35,19 @@ enabled = 1
 library = /home/roderik/Downloads/complete/Movies/
 
 [renamer]
-nfo_name = <filename>.orig.<ext>
+nfo_name = <%= "<filename>.orig.<ext>" %>
 from =
 force_every = 2
 move_leftover = False
 to =
-file_name = <thename><cd>.<ext>
+file_name = <%= "<thename><cd>.<ext>" %>
 enabled = 0
 next_on_failed = True
 unrar = False
 rename_nfo = True
 cleanup = 1
 separator =
-folder_name = <namethe> (<year>)
+folder_name = <%= "<namethe> (<year>)" %>
 run_every = 1
 foldersep =
 file_action = link
@@ -60,7 +60,7 @@ enabled = False
 [trailer]
 quality = 720p
 enabled = False
-name = <filename>-trailer
+name = <%= "<filename>-trailer" %>
 
 [download_providers]
 

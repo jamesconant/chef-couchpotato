@@ -1,5 +1,12 @@
 include_recipe "git::default"
 
+user node[:couchpotato][:user] do
+  system true
+  manage_home true
+  home "/home/#{node[:couchpotato][:user]}"
+  shell '/bin/bash'
+end
+
 directory  "/var/run/couchpotato" do
   owner node["couchpotato"]["user"]
   group node["couchpotato"]["group"]
@@ -26,19 +33,26 @@ execute "chown-git-repo" do
 end
 
 template "/etc/init.d/couchpotato" do
-    source "couchpotato.erb"
-    mode 0755
-    owner "root"
-    group "root"
+  source "couchpotato.erb"
+  mode 0755
+  owner "root"
+  group "root"
 end
 
-template "/home/#{node['couchpotato']['user']}/.couchpotato/settings.conf" do
-  source "settings.conf.erb"
-  mode 06666
-  owner node["couchpotato"]["user"]
-  group node["couchpotato"]["group"]
-  notifies :restart, 'service[couchpotato]'
+directory "/home/#{node[:couchpotato][:user]}/.couchpotato" do
+  owner node[:couchpotato][:user]
+  group node[:couchpotato][:group]
+  action :create
+  recursive true
 end
+
+# template "/home/#{node['couchpotato']['user']}/.couchpotato/settings.conf" do
+#   source "settings.conf.erb"
+#   mode 06666
+#   owner node["couchpotato"]["user"]
+#   group node["couchpotato"]["group"]
+#   notifies :restart, 'service[couchpotato]'
+# end
 
 service "couchpotato" do
   action :start
